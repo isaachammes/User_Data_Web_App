@@ -1,6 +1,22 @@
 h1 {
     border: 2px #eee solid;
-    color: brown;
+    color: black;
     text-align: center;
     padding: 10px;
+}
+
+.chart {
+    margin: auto;
+    display: block;
+    padding: 10px;
+  }
+
+.buttons {
+    margin: auto;
+    display:inline-block;
+    padding: 10px;
+}
+
+#buttonContainer{
+    text-align: center;
 }

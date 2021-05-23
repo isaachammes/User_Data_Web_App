@@ -1,5 +1,6 @@
 from helpers import *
 from flask import Flask, render_template, request
+import json
 
 app = Flask(__name__)
 
@@ -9,8 +10,11 @@ def get_home():
 
 @app.route('/get_statistics', methods=['GET','POST'])
 def get_statistics():
-    print(request.json)
-    user_data = request.json['results']
+    if request.headers.get('content-type') == 'application/json':
+        user_data = request.json['results']
+    else:
+        user_data = json.load(request.files['file'])['results']
+
     user_statistics = process_users(user_data)
 
     percent_female_vs_male = get_percent(
