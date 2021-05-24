@@ -1,5 +1,6 @@
 
 function handleSubmit() {
+  //Gets file or text with priority going to files. Then calls getStatistics using the proper request options.
   let requestOptions
 
   if (document.getElementById('fileSubmission').files[0]) {
@@ -28,6 +29,7 @@ function handleSubmit() {
 }
 
 function femaleVsMale() {
+  //Generates a pie chart for female vs male percent
   let statistics = window.statistics
   let malePercent = (100 - statistics['percent_female_vs_male'])
   let femalePercent = statistics['percent_female_vs_male']
@@ -39,6 +41,7 @@ function femaleVsMale() {
 }
 
 function firstNamePercent() {
+  //Generates a pie chart for first names A-M vs N-Z
   let statistics = window.statistics
   let amPercent = statistics['percent_first_names_start_a_to_m']
   let nzPercent = (100 - statistics['percent_first_names_start_a_to_m'])
@@ -50,6 +53,7 @@ function firstNamePercent() {
 }
 
 function lastNamePercent() {
+  //Generates a pie chart for last names A-M vs N-Z
   let statistics = window.statistics
   let amPercent = statistics['percent_last_names_start_a_to_m']
   let nzPercent = (100 - statistics['percent_last_names_start_a_to_m'])
@@ -61,33 +65,40 @@ function lastNamePercent() {
 }
 
 function percentEachState() {
+  //Generates a bar chart for percent of population in each state
   let statistics = window.statistics
   createBarChart(statistics["percent_by_state"])
 }
 
 function percentFemaleEachState() {
+  //Generates a bar chart for percent female in each state
   let statistics = window.statistics
   createBarChart(statistics["percent_female_by_state"])
 }
 
 function percentMaleEachState() {
+  //Generates a bar chart for percent male in each state
   let statistics = window.statistics
   createBarChart(statistics["percent_male_by_state"])
 }
 
 function agePercent() {
+  //Generates a bar chart for percent of population by age
   let statistics = window.statistics
   createBarChart(statistics["percent_by_age"])
 }
 
 function getStatistics(requestOptions) {
+  //Makes api call to retrieve statistics and calls renderChartsPage to setup the charts page
   fetch('/get_statistics', requestOptions)
       .then(response => response.json())
       .then(json => renderChartsPage(json))
       .catch(error => console.log('Request Failed', error))
+      .then(alert('Please only submit valid json as input'))
 }
 
 function renderChartsPage(statistics) {
+  //Changes html page to display charts and displays female vs male chart initially
   document.body.innerHTML = `
     <div id="svgChart">
       <svg class="chart"></svg>

@@ -1,4 +1,5 @@
 def process_users(user_data):
+    #Converts JSON data to python dictionary containing the needed counts for calculating statistics
     total_users = len(user_data)
     count_female = 0
     count_by_state = {}
@@ -7,7 +8,7 @@ def process_users(user_data):
     count_by_first_name_start_letter = {'A-M': 0, 'N-Z': 0}
     count_by_last_name_start_letter = {'A-M': 0, 'N-Z': 0}
     count_by_age = {'0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0, '>100': 0}
-
+    #Loops over JSON objects and counts the relevant data
     for user in user_data:
         gender = user['gender']
         state = user['location']['state']
@@ -82,6 +83,7 @@ def process_users(user_data):
     }
 
 def get_percent(part, whole):
+    #Calculates what percent the part is of the whole
     percent = (part/whole) * 100
     return round(percent, 2)
 
@@ -124,6 +126,7 @@ def get_percentage_by_age(count_by_age, total_users):
     return percentage_by_age
 
 def convert_to_plain_text(result):
+    #Converts dictionary result object into plain text with formatting
     plain_text_result = 'Percentage female versus male: ' + str(result['percent_female_vs_male']) + '%\n'
     plain_text_result += 'Percentage of first names that start with A-M versus N-Z: ' + str(result['percent_first_names_start_a_to_m']) + '%\n'
     plain_text_result += 'Percentage of last names that start with A-M versus N-Z: ' + str(result['percent_last_names_start_a_to_m']) + '%\n'
