@@ -76,3 +76,6 @@ def get_statistics():
     else:
         json_result = json.dumps(result)
         return result
+
+if __name__ == "__main__":
+  app.run()
