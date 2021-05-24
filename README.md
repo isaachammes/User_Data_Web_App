@@ -4,7 +4,9 @@ Used to extract information from user data. The request Accept header can be add
 instead of json by specifying application/xml or text/plain respectively. Also, additional person objects can be added to the results list in the request
 as needed. It is not limited to a single person.
 
-**URL** : `https://user-data-analyzer.herokuapp.com/get_statistics`
+**Web-App-URL** : `https://user-data-analyzer.herokuapp.com`
+
+**API-URL** : `https://user-data-analyzer.herokuapp.com/get_statistics`
 
 **Method** : `POST`
 
