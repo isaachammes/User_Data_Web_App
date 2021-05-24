@@ -1,9 +1,3 @@
-function getStatistics(requestOptions) {
-    fetch('/get_statistics', requestOptions)
-        .then(response => response.json())
-        .then(json => renderChartsPage(json))
-        .catch(error => console.log('Request Failed', error))
-}
 
 function handleSubmit() {
   let requestOptions
@@ -12,7 +6,11 @@ function handleSubmit() {
     let file = document.getElementById("fileSubmission").files[0]
     let formData = new FormData()
     formData.append("file", file)
-    requestOptions = {method: "POST", body: formData}
+    requestOptions = {method: "POST",
+                      headers: {
+                        'Accept': 'application/json'
+                      }, 
+                      body: formData}
   }
   else if (isJsonString(document.getElementById('textSubmission').value)) {
     let data = document.getElementById('textSubmission').value
@@ -20,6 +18,7 @@ function handleSubmit() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: data,
     }
@@ -28,13 +27,64 @@ function handleSubmit() {
   getStatistics(requestOptions)
 }
 
-function isJsonString(str) {
-  try {
-      JSON.parse(str);
-  } catch (e) {
-      return false;
-  }
-  return true;
+function femaleVsMale() {
+  let statistics = window.statistics
+  let malePercent = (100 - statistics['percent_female_vs_male'])
+  let femalePercent = statistics['percent_female_vs_male']
+  let data = [{name: "Male " + malePercent + "%", share: malePercent}, 
+  {name: "Female " + femalePercent + "%", share: femalePercent}]
+  let colors = ["#0000FF", "#FF1493"]
+
+  createPieChart(data, colors)
+}
+
+function firstNamePercent() {
+  let statistics = window.statistics
+  let amPercent = statistics['percent_first_names_start_a_to_m']
+  let nzPercent = (100 - statistics['percent_first_names_start_a_to_m'])
+  let data = [{name: "First Name A-M " + amPercent + "%", share: amPercent}, 
+  {name: "First Name N-Z " + nzPercent + "%", share: nzPercent}]
+  let colors = ["#FF0000	", "#008000"]
+
+  createPieChart(data, colors)
+}
+
+function lastNamePercent() {
+  let statistics = window.statistics
+  let amPercent = statistics['percent_last_names_start_a_to_m']
+  let nzPercent = (100 - statistics['percent_last_names_start_a_to_m'])
+  let data = [{name: "Last Name A-M " + amPercent + "%", share: amPercent}, 
+  {name: "Last Name N-Z " + nzPercent + "%", share: nzPercent}]
+  let colors = ["#FF0000	", "#008000"]
+
+  createPieChart(data, colors)
+}
+
+function percentEachState() {
+  let statistics = window.statistics
+  createBarChart(statistics["percent_by_state"])
+}
+
+function percentFemaleEachState() {
+  let statistics = window.statistics
+  createBarChart(statistics["percent_female_by_state"])
+}
+
+function percentMaleEachState() {
+  let statistics = window.statistics
+  createBarChart(statistics["percent_male_by_state"])
+}
+
+function agePercent() {
+  let statistics = window.statistics
+  createBarChart(statistics["percent_by_age"])
+}
+
+function getStatistics(requestOptions) {
+  fetch('/get_statistics', requestOptions)
+      .then(response => response.json())
+      .then(json => renderChartsPage(json))
+      .catch(error => console.log('Request Failed', error))
 }
 
 function renderChartsPage(statistics) {
@@ -105,7 +155,7 @@ function createBarChart(data) {
   d3.select("svg").remove()
   document.getElementById("svgChart").innerHTML = '<svg class="chart" width="1200" height="500"></svg>'
 
-  let margin = {top: 100, right: 20, bottom: 30, left: 40};
+  let margin = {top: 200, right: 20, bottom: 30, left: 40};
   let svg = d3.select("svg"),
           svgWidth = svg.attr("width"),
           svgHeight = svg.attr("height")
@@ -163,55 +213,12 @@ function createBarChart(data) {
     .attr("text-anchor", "middle");
 }
 
-function femaleVsMale() {
-  let statistics = window.statistics
-  let malePercent = (100 - statistics['percent_female_vs_male'])
-  let femalePercent = statistics['percent_female_vs_male']
-  let data = [{name: "Male " + malePercent + "%", share: malePercent}, 
-  {name: "Female " + femalePercent + "%", share: femalePercent}]
-  let colors = ["#0000FF", "#FF1493"]
 
-  createPieChart(data, colors)
-}
-
-function firstNamePercent() {
-  let statistics = window.statistics
-  let amPercent = statistics['percent_first_names_start_a_to_m']
-  let nzPercent = (100 - statistics['percent_first_names_start_a_to_m'])
-  let data = [{name: "First Name A-M " + amPercent + "%", share: amPercent}, 
-  {name: "First Name N-Z " + nzPercent + "%", share: nzPercent}]
-  let colors = ["#FF0000	", "#008000"]
-
-  createPieChart(data, colors)
-}
-
-function lastNamePercent() {
-  let statistics = window.statistics
-  let amPercent = statistics['percent_last_names_start_a_to_m']
-  let nzPercent = (100 - statistics['percent_last_names_start_a_to_m'])
-  let data = [{name: "Last Name A-M " + amPercent + "%", share: amPercent}, 
-  {name: "Last Name N-Z " + nzPercent + "%", share: nzPercent}]
-  let colors = ["#FF0000	", "#008000"]
-
-  createPieChart(data, colors)
-}
-
-function percentEachState() {
-  let statistics = window.statistics
-  createBarChart(statistics["percent_by_state"])
-}
-
-function percentFemaleEachState() {
-  let statistics = window.statistics
-  createBarChart(statistics["percent_female_by_state"])
-}
-
-function percentMaleEachState() {
-  let statistics = window.statistics
-  createBarChart(statistics["percent_male_by_state"])
-}
-
-function agePercent() {
-  let statistics = window.statistics
-  createBarChart(statistics["percent_by_age"])
+function isJsonString(str) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
 }

@@ -122,3 +122,29 @@ def get_percentage_by_age(count_by_age, total_users):
         percentage_by_age[age_range] = get_percent(count_by_age[age_range], total_users)
 
     return percentage_by_age
+
+def convert_to_plain_text(result):
+    plain_text_result = 'Percentage female versus male: ' + str(result['percent_female_vs_male']) + '%\n'
+    plain_text_result += 'Percentage of first names that start with A-M versus N-Z: ' + str(result['percent_first_names_start_a_to_m']) + '%\n'
+    plain_text_result += 'Percentage of last names that start with A-M versus N-Z: ' + str(result['percent_last_names_start_a_to_m']) + '%\n'
+
+    plain_text_result += 'Percentage of people in each state: '
+    for state, percent in result['percent_by_state'].items():
+        plain_text_result += state + ': ' + str(percent) + '% '
+    plain_text_result += '\n'
+
+    plain_text_result += 'Percentage of females in each state: '
+    for state, percent in result['percent_female_by_state'].items():
+        plain_text_result += state + ': ' + str(percent) + '% '
+    plain_text_result += '\n'
+
+    plain_text_result += 'Percentage of males in each state: '
+    for state, percent in result['percent_male_by_state'].items():
+        plain_text_result += state + ': ' + str(percent) + '% '
+    plain_text_result += '\n'
+
+    plain_text_result += 'Percentage of people by age: '
+    for age, percent in result['percent_by_age'].items():
+        plain_text_result += age + ': ' + str(percent) + '% '
+
+    return plain_text_result
