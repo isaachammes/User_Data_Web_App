@@ -93,8 +93,10 @@ function getStatistics(requestOptions) {
   fetch('/get_statistics', requestOptions)
       .then(response => response.json())
       .then(json => renderChartsPage(json))
-      .catch(error => console.log('Request Failed', error))
-      .then(alert('Please only submit valid json as input'))
+      .catch(function(error) {
+        console.log('Request Failed', error)
+        alert('Please only submit valid json as input')
+      })
 }
 
 function renderChartsPage(statistics) {
@@ -178,11 +180,13 @@ function createBarChart(data) {
   for(let key in data){
     if(data.hasOwnProperty(key)){
         sourceNames.push(key);
-        sourceCount.push(parseInt(data[key]));
+        sourceCount.push(data[key]);
     }
   }
   x.domain(sourceNames);
-  y.domain([0, d3.max(sourceCount, function(d) { return d; })]);
+  let yDomainVal = d3.max(sourceCount, function(d) { return d; })
+  yDomainVal += (yDomainVal * 0.15)
+  y.domain([0, yDomainVal])
 
   svg = svg.append("g")
          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -223,7 +227,6 @@ function createBarChart(data) {
     .attr("fill" , "black")
     .attr("text-anchor", "middle");
 }
-
 
 function isJsonString(str) {
   try {
