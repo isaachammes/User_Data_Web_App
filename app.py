@@ -7,11 +7,10 @@ import json
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
-#Home route to render static html page
 def get_home():
     return render_template('index.html')
 
-@app.route('/get_statistics', methods=['GET','POST'])
+@app.route('/get_statistics', methods=['POST'])
 #API to retrieve statistics. Accepts JSON objects or files.
 def get_statistics():
     #Checks if request is a json object. If not, it assumes that it is a file.

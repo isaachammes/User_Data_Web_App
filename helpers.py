@@ -10,7 +10,7 @@ def process_users(user_data):
     count_by_first_name_start_letter = {'A-M': 0, 'N-Z': 0}
     count_by_last_name_start_letter = {'A-M': 0, 'N-Z': 0}
     count_by_age = {'0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0, '>100': 0}
-    #Loops over JSON objects and counts the relevant data
+
     for user in user_data:
         gender = user['gender']
         state = user['location']['state']
@@ -84,23 +84,6 @@ def process_users(user_data):
         'count_by_age': count_by_age,
     }
 
-def get_percent(part, whole):
-    #Calculates what percent the part is of the whole
-    percent = (part/whole) * 100
-    return round(percent, 1)
-
-def convert_result_to_file(result):
-    #Converts the given result into a file like object
-    file_result = BytesIO()
-    file_result.write(bytes(result, 'utf-8'))
-    file_result.seek(0)
-    return file_result
-    
-
-def dictionary_sort_by_value(dict):
-    #Sorts a dictionary by value and returns the new sorted dictionary
-    return {k: v for k, v in sorted(dict.items(), key=lambda item: item[1], reverse=True)}
-
 def get_population_percentage_by_state(count_by_state, total_users):
     number_of_states = len(count_by_state)
     
@@ -140,7 +123,7 @@ def get_percentage_by_age(count_by_age, total_users):
     return percentage_by_age
 
 def convert_to_plain_text(result):
-    #Converts dictionary result object into plain text with formatting
+    #Converts dictionary result object into string with formatting
     plain_text_result = 'Percentage female versus male: ' + str(result['percent_female_vs_male']) + '%\n'
     plain_text_result += 'Percentage of first names that start with A-M versus N-Z: ' + str(result['percent_first_names_start_a_to_m']) + '%\n'
     plain_text_result += 'Percentage of last names that start with A-M versus N-Z: ' + str(result['percent_last_names_start_a_to_m']) + '%\n'
@@ -165,3 +148,18 @@ def convert_to_plain_text(result):
         plain_text_result += age + ': ' + str(percent) + '% '
 
     return plain_text_result
+
+def get_percent(part, whole):
+    percent = (part/whole) * 100
+    return round(percent, 1)
+
+def convert_result_to_file(result):
+    file_result = BytesIO()
+    file_result.write(bytes(result, 'utf-8'))
+    file_result.seek(0)
+    return file_result
+    
+
+def dictionary_sort_by_value(dict):
+    #Sorts a dictionary by value and returns the new sorted dictionary
+    return {k: v for k, v in sorted(dict.items(), key=lambda item: item[1], reverse=True)}
