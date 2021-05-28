@@ -1,3 +1,5 @@
+from io import BytesIO
+
 def process_users(user_data):
     #Converts JSON data to python dictionary containing the needed counts for calculating statistics
     total_users = len(user_data)
@@ -85,7 +87,19 @@ def process_users(user_data):
 def get_percent(part, whole):
     #Calculates what percent the part is of the whole
     percent = (part/whole) * 100
-    return round(percent, 2)
+    return round(percent, 1)
+
+def convert_result_to_file(result):
+    #Converts the given result into a file like object
+    file_result = BytesIO()
+    file_result.write(bytes(result, 'utf-8'))
+    file_result.seek(0)
+    return file_result
+    
+
+def dictionary_sort_by_value(dict):
+    #Sorts a dictionary by value and returns the new sorted dictionary
+    return {k: v for k, v in sorted(dict.items(), key=lambda item: item[1], reverse=True)}
 
 def get_population_percentage_by_state(count_by_state, total_users):
     number_of_states = len(count_by_state)

@@ -31,11 +31,11 @@ function handleSubmit() {
 function femaleVsMale() {
   //Generates a pie chart for female vs male percent
   let statistics = window.statistics
-  let malePercent = (100 - statistics['percent_female_vs_male'])
   let femalePercent = statistics['percent_female_vs_male']
-  let data = [{name: "Male " + malePercent + "%", share: malePercent}, 
-  {name: "Female " + femalePercent + "%", share: femalePercent}]
-  let colors = ["#0000FF", "#FF1493"]
+  let malePercent = Math.round((100 - statistics['percent_female_vs_male']) * 10) / 10
+  let data = [{name: "Male", percent: malePercent + "%", share: malePercent}, 
+  {name: "Female", percent: femalePercent + "%", share: femalePercent}]
+  let colors = ["deeppink", "blue"]
 
   createPieChart(data, colors)
 }
@@ -44,10 +44,10 @@ function firstNamePercent() {
   //Generates a pie chart for first names A-M vs N-Z
   let statistics = window.statistics
   let amPercent = statistics['percent_first_names_start_a_to_m']
-  let nzPercent = (100 - statistics['percent_first_names_start_a_to_m'])
-  let data = [{name: "First Name A-M " + amPercent + "%", share: amPercent}, 
-  {name: "First Name N-Z " + nzPercent + "%", share: nzPercent}]
-  let colors = ["#FF0000	", "#008000"]
+  let nzPercent = Math.round((100 - statistics['percent_first_names_start_a_to_m']) * 10) / 10
+  let data = [{name: "First Name A-M", percent: amPercent + "%", share: amPercent}, 
+  {name: "First Name N-Z", percent: nzPercent + "%", share: nzPercent}]
+  let colors = ["mediumslateblue", "fuchsia"]
 
   createPieChart(data, colors)
 }
@@ -56,10 +56,10 @@ function lastNamePercent() {
   //Generates a pie chart for last names A-M vs N-Z
   let statistics = window.statistics
   let amPercent = statistics['percent_last_names_start_a_to_m']
-  let nzPercent = (100 - statistics['percent_last_names_start_a_to_m'])
-  let data = [{name: "Last Name A-M " + amPercent + "%", share: amPercent}, 
-  {name: "Last Name N-Z " + nzPercent + "%", share: nzPercent}]
-  let colors = ["#FF0000	", "#008000"]
+  let nzPercent = Math.round((100 - statistics['percent_last_names_start_a_to_m']) * 10) / 10
+  let data = [{name: "Last Name A-M", percent: amPercent + "%", share: amPercent}, 
+  {name: "Last Name N-Z", percent: nzPercent + "%", share: nzPercent}]
+  let colors = ["indigo", "mediumorchid"]
 
   createPieChart(data, colors)
 }
@@ -67,25 +67,25 @@ function lastNamePercent() {
 function percentEachState() {
   //Generates a bar chart for percent of population in each state
   let statistics = window.statistics
-  createBarChart(statistics["percent_by_state"])
+  createBarChart(statistics["percent_by_state"], ["State", "Percent of Total Population"], "darkcyan")
 }
 
 function percentFemaleEachState() {
   //Generates a bar chart for percent female in each state
   let statistics = window.statistics
-  createBarChart(statistics["percent_female_by_state"])
+  createBarChart(statistics["percent_female_by_state"], ["State", "Percent of State Population that is Female"], "deeppink")
 }
 
 function percentMaleEachState() {
   //Generates a bar chart for percent male in each state
   let statistics = window.statistics
-  createBarChart(statistics["percent_male_by_state"])
+  createBarChart(statistics["percent_male_by_state"], ["State", "Percent of State Population that is Male"], "blue")
 }
 
 function agePercent() {
   //Generates a bar chart for percent of population by age
   let statistics = window.statistics
-  createBarChart(statistics["percent_by_age"])
+  createBarChart(statistics["percent_by_age"], ["Age in Years", "Percent of Total Population"], "mediumaquamarine")
 }
 
 function getStatistics(requestOptions) {
@@ -122,8 +122,7 @@ function renderChartsPage(statistics) {
 
 function createPieChart(data, colors) {
   d3.select("svg").remove()
-  document.getElementById("svgChart").innerHTML = '<svg class="chart" width="1000" height="600"></svg>'
-
+  document.getElementById("svgChart").innerHTML = '<svg class="chart" width="1200" height="600"></svg>'
   let svg = d3.select("svg"),
             width = svg.attr("width"),
             height = svg.attr("height"),
@@ -159,16 +158,21 @@ function createPieChart(data, colors) {
   arc.append("text")
       .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")" })
       .attr("text-anchor", "middle")
-      .text(function(d) { return d.data.name; })
+      .text(function(d) { return d.data.percent; })
       .style("font-family", "arial")
       .style("font-size", 15)
+
+  svg.append("circle").attr("cx",200).attr("cy",130).attr("r", 6).style("fill", colors[1])
+  svg.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", colors[0])
+  svg.append("text").attr("x", 220).attr("y", 130).text(data[0]['name']).style("font-size", "15px").attr("alignment-baseline","middle")
+  svg.append("text").attr("x", 220).attr("y", 160).text(data[1]['name']).style("font-size", "15px").attr("alignment-baseline","middle")
 }
 
-function createBarChart(data) {
+function createBarChart(data, axis_labels, color) {
   d3.select("svg").remove()
-  document.getElementById("svgChart").innerHTML = '<svg class="chart" width="1200" height="500"></svg>'
+  document.getElementById("svgChart").innerHTML = '<svg class="chart" width="1200" height="600"></svg>'
 
-  let margin = {top: 200, right: 20, bottom: 30, left: 40};
+  let margin = {top: 20, right: 20, bottom: 50, left: 40};
   let svg = d3.select("svg"),
           svgWidth = svg.attr("width"),
           svgHeight = svg.attr("height")
@@ -210,11 +214,12 @@ function createBarChart(data) {
     .attr("x", function(d) { return x(d); })
     .attr("y", function(d) { return y(data[d]); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(data[d]); });
+    .attr("height", function(d) { return height - y(data[d]); })
+    .attr("fill", color)
     
   bars.append("text")
     .text(function(d) { 
-        return data[d];
+        return data[d] + "%";
     })
     .attr("x", function(d){
         return x(d) + x.bandwidth()/2;
@@ -226,6 +231,21 @@ function createBarChart(data) {
     .attr("font-size" , "14px")
     .attr("fill" , "black")
     .attr("text-anchor", "middle");
+
+    svg.append("text")             
+    .attr("transform",
+          "translate(" + (width/2) + " ," + 
+                         (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text(axis_labels[0])
+
+    svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text(axis_labels[1])
 }
 
 function isJsonString(str) {

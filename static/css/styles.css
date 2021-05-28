@@ -1,3 +1,7 @@
+body {
+    background-color: powderblue;
+}
+
 h1 {
     border: 2px #eee solid;
     color: black;
@@ -6,17 +10,35 @@ h1 {
 }
 
 .chart {
+    background-color: white;
+    border: 1px solid black;
     margin: auto;
     display: block;
+    border-radius: 12px;
     padding: 10px;
   }
 
 .buttons {
+    background-color: lightgray;
+    border: 2px solid black;
     margin: auto;
     display:inline-block;
-    padding: 10px;
+    text-align: center;
+    border-radius: 12px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    padding: 14px 40px;
 }
 
+.buttons:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
 #buttonContainer{
+    padding-top: 5px;
     text-align: center;
+}
+
+input[type="file"] {
+    display: none;
 }
