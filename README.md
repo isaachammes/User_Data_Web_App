@@ -146,36 +146,3 @@ Percentage of people by age: 0-20: 100.0% 21-40: 0.0% 41-60: 0.0% 61-80: 0.0% 81
   <Kansas>0.0</Kansas>
 </percent_male_by_state>
 ```
-
-## Failed Response
-
-**Code** : `200 OK`
-
-**Response Content Examples by Accept Header**
-
-**'Accept': 'application/json'**
-
-```
-{
-  "percent_by_age": {
-    "0-20": 100.0,
-    "21-40": 0.0,
-    "41-60": 0.0,
-    "61-80": 0.0,
-    "81-100": 0.0,
-    ">100": 0.0
-  },
-  "percent_by_state": {
-    "Kansas": 100.0
-  },
-  "percent_female_by_state": {
-    "Kansas": 100.0
-  },
-  "percent_female_vs_male": 100.0,
-  "percent_first_names_start_a_to_m": 0.0,
-  "percent_last_names_start_a_to_m": 100.0,
-  "percent_male_by_state": {
-    "Kansas": 0.0
-  }
-}
-```
