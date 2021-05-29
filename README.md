@@ -20,7 +20,7 @@ percent_by_age: Percentage of users that are in the following age ranges 0-20, 2
 
 **Auth required** : NO
 
-**Data constraints**
+**Data Constraints**
 
 ```
 {
@@ -65,28 +65,60 @@ percent_by_age: Percentage of users that are in the following age ranges 0-20, 2
 }
 ```
 
-## Example API Usage with Python Requests
+## Example API Usage
 
 ```
-import requests
+POST https://user-data-analyzer.herokuapp.com/get_statistics HTTP/1.1
+content-type: application/json
+Accept: application/json
 
-URL = 'https://user-data-analyzer.herokuapp.com/get_statistics'
-headers = {"Accept": "application/json"}
-user_data = content_example
-
-response = requests.post(URL, json=user_data, headers=json_header)
+{
+   "results":[
+      {
+         "gender": "female",
+         "name":{
+            "first": "Sara",
+            "last": "Johnson"
+         },
+         "location":{
+            "state":"Kansas"
+         },
+         "dob":{
+            "age":12
+         }
+      }
+   ]
+}
 ```
 
-## Success Response
-
-**Code** : `200 OK`
-
-**Response File Content Examples by Accept Header**
+## Success Response by Accept Header
 
 **'Accept': 'application/json'**
 
 ```
+HTTP/1.1 200 OK
+Connection: close
+Server: gunicorn
+Date: Sat, 29 May 2021 21:02:54 GMT
+Content-Disposition: attachment; filename=result.json
+Content-Type: application/json
+Content-Length: 348
+Cache-Control: no-cache
+Via: 1.1 vegur
+
 {
+  "percent_female_vs_male": 100.0,
+  "percent_first_names_start_a_to_m": 0.0,
+  "percent_last_names_start_a_to_m": 100.0,
+  "percent_by_state": {
+    "Kansas": 100.0
+  },
+  "percent_male_by_state": {
+    "Kansas": 0.0
+  },
+  "percent_female_by_state": {
+    "Kansas": 100.0
+  },
   "percent_by_age": {
     "0-20": 100.0,
     "21-40": 0.0,
@@ -94,18 +126,6 @@ response = requests.post(URL, json=user_data, headers=json_header)
     "61-80": 0.0,
     "81-100": 0.0,
     ">100": 0.0
-  },
-  "percent_by_state": {
-    "Kansas": 100.0
-  },
-  "percent_female_by_state": {
-    "Kansas": 100.0
-  },
-  "percent_female_vs_male": 100.0,
-  "percent_first_names_start_a_to_m": 0.0,
-  "percent_last_names_start_a_to_m": 100.0,
-  "percent_male_by_state": {
-    "Kansas": 0.0
   }
 }
 ```
@@ -113,6 +133,16 @@ response = requests.post(URL, json=user_data, headers=json_header)
 **'Accept': 'text/plain'**
 
 ```
+HTTP/1.1 200 OK
+Connection: close
+Server: gunicorn
+Date: Sat, 29 May 2021 21:03:52 GMT
+Content-Disposition: attachment; filename=result.txt
+Content-Type: text/plain; charset=utf-8
+Content-Length: 421
+Cache-Control: no-cache
+Via: 1.1 vegur
+
 Percentage female versus male: 100.0%
 Percentage of first names that start with A-M versus N-Z: 0.0%
 Percentage of last names that start with A-M versus N-Z: 100.0%
@@ -125,6 +155,16 @@ Percentage of people by age: 0-20: 100.0% 21-40: 0.0% 41-60: 0.0% 61-80: 0.0% 81
 **'Accept': 'application/xml'**
 
 ```
+HTTP/1.1 200 OK
+Connection: close
+Server: gunicorn
+Date: Sat, 29 May 2021 21:04:22 GMT
+Content-Disposition: attachment; filename=result.xml
+Content-Type: text/xml; charset=utf-8
+Content-Length: 587
+Cache-Control: no-cache
+Via: 1.1 vegur
+
 <percent_by_age>
   <_0-20>100.0</_0-20>
   <_21-40>0.0</_21-40>
