@@ -1,5 +1,5 @@
 from helpers import *
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, abort
 from accept_types import get_best_match
 from dict2xml import dict2xml
 import json
@@ -14,17 +14,23 @@ def get_home():
 #API to retrieve statistics. Accepts JSON objects or files.
 def get_statistics():
     #Checks if request is a json object. If not, it assumes that it is a file.
-    if request.headers.get('content-type') == 'application/json':
-        user_data = request.json['results']
-    else:
-        user_data = json.load(request.files['file'])['results']
+    try:
+        if request.headers.get('content-type') == 'application/json':
+            user_data = request.json['results']
+        else:
+            user_data = json.load(request.files['file'])['results']
+    except:
+        abort(400)
     #Determines the best return type based on the Accept header
     try:
         return_type = get_best_match(request.headers.get('Accept'), ['text/plain', 'application/xml', 'application/json'])
     except:
         return_type = None
     #Converts JSON data to python dictionary containing the needed counts for calculating statistics
-    user_statistics = process_users(user_data)
+    try:
+        user_statistics = process_users(user_data)
+    except:
+        abort(400)
     #Calculates all relevant statistics and stores the data in a dictionary
     percent_female_vs_male = get_percent(
                                 user_statistics['count_female'],

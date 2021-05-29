@@ -10,6 +10,10 @@ xml_header = {'Accept': 'application/xml'}
 with open('test.json') as f:
     test_data = json.load(f)
 
+bad_request = {
+    'invalid': 'request'
+}
+
 def test_file_request_status():
     files = {'file': open('test.json')}
     response = requests.post(URL, files=files)
@@ -41,3 +45,7 @@ def test_data_accuracy():
     assert results['percent_male_by_state'] == {'Extremadura': 100.0, 'Kansas': 0.0, 'Minas Gerais': 0.0, 'Nord-TrÃ¸ndelag': 0.0, 'Victoria': 0.0}
     assert results['percent_female_by_state'] == {'Extremadura': 0.0, 'Kansas': 100.0, 'Minas Gerais': 100.0, 'Nord-TrÃ¸ndelag': 100.0, 'Victoria': 100.0}
     assert results['percent_by_age'] == {'0-20': 0.0, '21-40': 60.0, '41-60': 20.0, '61-80': 20.0, '81-100': 0.0, '>100': 0.0}
+
+def test_bad_request():
+    response = requests.post(URL, json=bad_request, headers=json_header)
+    assert response.status_code == 400

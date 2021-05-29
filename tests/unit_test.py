@@ -1,5 +1,7 @@
 import pytest
 import json
+import sys
+sys.path.append('../')
 from helpers import *
 
 test_data_count = {

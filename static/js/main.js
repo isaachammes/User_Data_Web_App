@@ -25,7 +25,19 @@ function handleSubmit() {
     }
   }
 
-  getStatistics(requestOptions)
+  fetch('/get_statistics', requestOptions)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      })
+      .then(json => renderChartsPage(json))
+      .catch(function(error) {
+        console.log('Request Failed', error)
+        alert('Please only submit valid json as input')
+      })
 }
 
 function femaleVsMale() {
@@ -86,17 +98,6 @@ function agePercent() {
   //Generates a bar chart for percent of population by age
   let statistics = window.statistics
   createBarChart(statistics["percent_by_age"], ["Age in Years", "Percent of Total Population"], "mediumaquamarine")
-}
-
-function getStatistics(requestOptions) {
-  //Makes api call to retrieve statistics and calls renderChartsPage to setup the charts page
-  fetch('/get_statistics', requestOptions)
-      .then(response => response.json())
-      .then(json => renderChartsPage(json))
-      .catch(function(error) {
-        console.log('Request Failed', error)
-        alert('Please only submit valid json as input')
-      })
 }
 
 function renderChartsPage(statistics) {
