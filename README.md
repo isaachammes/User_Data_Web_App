@@ -4,13 +4,13 @@ Both the web app and API accept data about users in either a json file or json o
 
 **Calculated Statistics**
 
-percent_female_vs_male: Percentage of users that are female.
-percent_first_names_start_a_to_m: Percentage of users with first names that start with A-M. Users with first names that do not start with A-Z are left out of the calculation.
-percent_last_names_start_a_to_m: Percentage of users with last names that start with A-M. Users with last names that do not start with A-Z are left out of the calculation.
-percent_by_state: Percentage of users that are in each state. This is only calculated for the ten most populous states.
-percent_female_by_state: Percentage of users that female in each state. This is only calculated for the ten most populous states.
-percent_male_by_state: Percentage of users that male in each state. This is only calculated for the ten most populous states.
-percent_by_age: Percentage of users that are in the following age ranges 0-20, 21-40, 41-60, 61-80, 81-100, and >100.
+percent_female_vs_male: Percentage of users that are female.<br />
+percent_first_names_start_a_to_m: Percentage of users with first names that start with A-M. Users with first names that do not start with A-Z are left out of the calculation.<br />
+percent_last_names_start_a_to_m: Percentage of users with last names that start with A-M. Users with last names that do not start with A-Z are left out of the calculation.<br />
+percent_by_state: Percentage of users that are in each state. This is only calculated for the ten most populous states.<br />
+percent_female_by_state: Percentage of users that female in each state. This is only calculated for the ten most populous states.<br />
+percent_male_by_state: Percentage of users that male in each state. This is only calculated for the ten most populous states.<br />
+percent_by_age: Percentage of users that are in the following age ranges 0-20, 21-40, 41-60, 61-80, 81-100, and >100.<br />
 
 **Web-App-URL** : `https://user-data-analyzer.herokuapp.com`
 
